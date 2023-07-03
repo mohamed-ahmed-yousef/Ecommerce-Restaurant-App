@@ -62,7 +62,7 @@ class Profile(models.Model):
         
         bio = models.TextField(blank=True)
         profile_image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
-        # date_of_birth = models.DateField(null=True, blank=True)
+        date_of_birth = models.DateField(null=True, blank=True)
         phone_number = models.CharField(max_length=20, null=True, blank=True)
         # def save(self, *args, **kwargs):
         #     super().save()
@@ -73,5 +73,5 @@ class Profile(models.Model):
         #         output_size = (300, 300)
         #         img.thumbnail(output_size)
         #         img.save(self.profile_image.path)
-        # def __str__(self):
-        #     return self.user.first_name
+        def __str__(self):
+            return self.user.first_name

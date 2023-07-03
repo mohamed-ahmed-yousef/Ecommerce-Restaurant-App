@@ -33,11 +33,11 @@ class EmailUserAdmin(UserAdmin):
 admin.site.register(CustomUser, EmailUserAdmin)
 
 class ProfileAdmin(admin.ModelAdmin):
-    fields = ['user', 'bio', 'profile_image',  'phone_number']
-    # fields = ['user', 'bio', 'profile_image', 'date_of_birth', 'phone_number']
+    # fields = ['user', 'bio', 'profile_image',  'phone_number']
+    fields = ['user', 'bio', 'profile_image', 'date_of_birth', 'phone_number']
 
-    list_display = ['user', 'bio', 'profile_image', 'phone_number']
-    # list_display = ['user', 'bio', 'profile_image', 'date_of_birth', 'phone_number']
+    # list_display = ['user', 'bio', 'profile_image', 'phone_number']
+    list_display = ['user', 'bio', 'profile_image', 'date_of_birth', 'phone_number']
 
     # list_display = ['user', 'first_name', 'last_name', 'date_of_birth']v
     # Customize other options as needed
