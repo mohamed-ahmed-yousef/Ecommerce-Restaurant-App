@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -46,19 +47,22 @@ class CustomUser(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-      
     objects = CustomUserManager()
+    first_name = models.CharField(max_length=50,default='')
+    last_name = models.CharField(max_length=50,default='')
+    email_confirmed = models.BooleanField(_('email confirmed'), default=False)
+    profile_completed = models.BooleanField(default=False)
+    
     # profile = models.OneToOneField('Profile', on_delete=models.CASCADE, null=True, blank=True)
     def __str__(self):
         return self.email
     
 class Profile(models.Model):
-        user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-        # first_name = models.CharField(max_length=50)
-        # last_name = models.CharField(max_length=50)
+        user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True,default='')
+        
         bio = models.TextField(blank=True)
         profile_image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
-        date_of_birth = models.DateField(null=True, blank=True)
+        # date_of_birth = models.DateField(null=True, blank=True)
         phone_number = models.CharField(max_length=20, null=True, blank=True)
         # def save(self, *args, **kwargs):
         #     super().save()
@@ -69,5 +73,5 @@ class Profile(models.Model):
         #         output_size = (300, 300)
         #         img.thumbnail(output_size)
         #         img.save(self.profile_image.path)
-        def __str__(self):
-            return self.user.first_name+self.user.last_name
+        # def __str__(self):
+        #     return self.user.first_name

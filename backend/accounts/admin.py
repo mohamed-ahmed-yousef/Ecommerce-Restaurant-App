@@ -10,7 +10,7 @@ from .models import CustomUser, Profile
 
 class EmailUserAdmin(UserAdmin):
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('email', 'password','email_confirmed')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name')}),
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
@@ -33,9 +33,18 @@ class EmailUserAdmin(UserAdmin):
 admin.site.register(CustomUser, EmailUserAdmin)
 
 class ProfileAdmin(admin.ModelAdmin):
+    fields = ['user', 'bio', 'profile_image',  'phone_number']
+    # fields = ['user', 'bio', 'profile_image', 'date_of_birth', 'phone_number']
 
-    list_display = ['user', 'date_of_birth']
+    list_display = ['user', 'bio', 'profile_image', 'phone_number']
+    # list_display = ['user', 'bio', 'profile_image', 'date_of_birth', 'phone_number']
 
-    # list_display = ['user', 'first_name', 'last_name', 'date_of_birth']
+    # list_display = ['user', 'first_name', 'last_name', 'date_of_birth']v
     # Customize other options as needed
 admin.site.register(Profile, ProfileAdmin)
+
+# class cuserAdmin(admin.ModelAdmin):
+
+#     list_display = ['user', 'email_confirmed']
+
+# admin.site.register(CustomUser, cuserAdmin)

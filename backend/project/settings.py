@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
-    # 'accounts.apps.AccountsConfig',
+    # 'accounts',
+    'accounts.apps.AccountsConfig',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt'
 ]
 
 MIDDLEWARE = [
@@ -126,12 +128,36 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #*******************************
-
+from datetime import timedelta
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = ['accounts.auth_backends.EmailBackend']
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_TOKEN_EXPIRATION': {
+        'rest_framework.authentication.TokenAuthentication': timedelta(days=7),
+    }
 }
+
+from django.conf import settings
+
+AUTH_TOKEN_VALIDITY = getattr(settings, 'AUTH_TOKEN_VALIDITY', timedelta(days=1))
+
+# Emailing settings
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_FROM = 'pythonlessons0@gmail.com'
+EMAIL_HOST_USER = 'backendbackend90@gmail.com'
+EMAIL_HOST_PASSWORD = 'fkgkonllykbobfin'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+# PASSWORD_RESET_TIMEOUT = 14400
+# SIMPLE_JWT = {
+#     'ROTATE_REFRESH_TOKENS': False,
+#     'BLACKLIST_AFTER_ROTATION': False,
+#     'UPDATE_LAST_LOGIN': False,
+# }
