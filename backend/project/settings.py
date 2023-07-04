@@ -128,7 +128,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #*******************************
-from datetime import timedelta
+import datetime 
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = ['accounts.auth_backends.EmailBackend']
@@ -136,14 +136,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_TOKEN_EXPIRATION': {
-        'rest_framework.authentication.TokenAuthentication': timedelta(days=7),
-    }
+    # 'DEFAULT_TOKEN_EXPIRATION': {
+    #     'rest_framework.authentication.TokenAuthentication': timedelta(days=7),
+    # }
 }
 
 from django.conf import settings
 
-AUTH_TOKEN_VALIDITY = getattr(settings, 'AUTH_TOKEN_VALIDITY', timedelta(days=1))
+# AUTH_TOKEN_VALIDITY = getattr(settings, 'AUTH_TOKEN_VALIDITY', timedelta(days=1))
 
 # Emailing settings
 
@@ -161,3 +161,7 @@ EMAIL_USE_TLS = True
 #     'BLACKLIST_AFTER_ROTATION': False,
 #     'UPDATE_LAST_LOGIN': False,
 # }
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=15),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=15),
+}

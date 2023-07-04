@@ -9,10 +9,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from PIL import Image
 class CustomUserManager(BaseUserManager):
-    """
-    Custom user model manager where email is the unique identifiers
-    for authentication instead of usernames.
-    """
+
 
     def create_user(self, email, password, **extra_fields):
         """
@@ -48,12 +45,11 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = CustomUserManager()
-    first_name = models.CharField(max_length=50,default='')
-    last_name = models.CharField(max_length=50,default='')
+    first_name = models.CharField(max_length=50,blank=False)
+    last_name = models.CharField(max_length=50,blank=False)
     email_confirmed = models.BooleanField(_('email confirmed'), default=False)
     profile_completed = models.BooleanField(default=False)
     
-    # profile = models.OneToOneField('Profile', on_delete=models.CASCADE, null=True, blank=True)
     def __str__(self):
         return self.email
     
@@ -64,14 +60,6 @@ class Profile(models.Model):
         profile_image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
         date_of_birth = models.DateField(null=True, blank=True)
         phone_number = models.CharField(max_length=20, null=True, blank=True)
-        # def save(self, *args, **kwargs):
-        #     super().save()
 
-        #     img = Image.open(self.profile_image.path)
-
-        #     if img.height > 300 or img.width > 300:
-        #         output_size = (300, 300)
-        #         img.thumbnail(output_size)
-        #         img.save(self.profile_image.path)
         def __str__(self):
             return self.user.first_name

@@ -34,21 +34,10 @@ def send_confirmation_email(user,request):
     print('done_email')
 
 class UserSerializer(serializers.ModelSerializer):
-    # password = serializers.CharField(write_only=True)
-    # def create(self, validated_data):
-    #     user = get_user_model.objects.create_user(
-    #         email=validated_data['email'],
-    #         password=validated_data['password']
-    #     )
 
-    #     # Send confirmation email
-    #     current_site = get_current_site(self.context['request'])
-    #     print("ser send")
-    #     send_confirmation_email(user,current_site)
-
-    #     return user
     class Meta:
-        model = get_user_model()
+        # model = get_user_model()
+        model = CustomUser
         fields = ('first_name', 'last_name','email','password')
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -57,15 +46,3 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = '__all__'
-        # fields = ['id', 'user', 'bio', 'profile_image', 'date_of_birth', 'phone_number']
-
-    # def create(self, validated_data):
-    #     user_data = validated_data.pop('user')
-    #     user = CustomUser.objects.get_or_create(**user_data)[0]  # Retrieve or create the user
-
-    #     # Ensure only one profile is created for the user
-    #     if hasattr(user, 'profile'):
-    #         raise serializers.ValidationError("Profile already exists for this user.")
-
-    #     profile = Profile.objects.create(user=user, **validated_data)
-    #     return profile

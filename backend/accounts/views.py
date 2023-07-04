@@ -24,24 +24,6 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 
-# from .tokens import account_activation_token
-
-
-
-
-# class UserViewSet(viewsets.ViewSet):
-#     def create(self, request):
-#         # Process registration form and save user data
-#         serializer = UserSerializer(data=request.data)
-#         if serializer.is_valid():
-#             user = serializer.save()
-
-#             # Send confirmation email
-#             send_confirmation_email(user)
-
-#             return Response({'message': 'User registered successfully. Please check your email for confirmation.'}, status=status.HTTP_201_CREATED)
-#         else:
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class RegisterView(APIView):
     http_method_names = ['post']
 
@@ -56,21 +38,27 @@ class RegisterView(APIView):
             return Response({'message': 'User registered successfully. Please check your email for confirmation.'}, status=HTTP_201_CREATED)
         return Response(status=HTTP_400_BAD_REQUEST, data={'errors': serializer.errors})
 
-
+from rest_framework_simplejwt.tokens import RefreshToken
 class EmailTokenObtainPairView(TokenObtainPairView):
     serializer_class = TokenObtainPairSerializer
 
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        user = self.user
-        print('@'*50)
-        if user and not user.email_confirmed:
-            send_confirmation_email(user,get_current_site(self.request))
-            raise InvalidToken('Email address not confirmed. Please verify your email.')
-        # elif  user.profile_completed :
-        #     raise InvalidToken(' profile not completed. Please complete your profile.')
+    def post(self, request, *args, **kwargs):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            email= request.data['email']
+            password= request.data['password']
+            user=authenticate(email=email, password=password)
+          
+     
+            if (not user.email_confirmed and not user.is_superuser):
+                return Response({'error': 'Email is not confirmed'}, status=HTTP_400_BAD_REQUEST)
 
-        return data
+            token = RefreshToken.for_user(serializer.user)
+            return Response({
+                'access': str(token.access_token),
+                'refresh': str(token)
+            })
+
     
 class EmailConfirmationView(generics.GenericAPIView):
     def get(self, request, uidb64, token):
@@ -94,53 +82,16 @@ class ProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     def create(self, request, *args, **kwargs):
         mutable_data = deepcopy(request.data)
-        mutable_data['user'] = request.user.id
+
+        user=request.user
+        user.profile_completed=True
+        user.save()
+
+        mutable_data['user'] =user.id
         serializer = self.get_serializer(data=mutable_data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=HTTP_201_CREATED, headers=headers)
-    # def create(self, request, *args, **kwargs):
-    #     request.data['user'] = request.user.id
-    #     print('*'*100)
-    #     return super().create(request, *args, **kwargs)
 
 
-# class ProfileViewSet(viewsets.ModelViewSet):
-#     queryset = Profile.objects.all()
-#     serializer_class = ProfileSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
-
-
-
-
-
-
-
-
-
-
-    # def create(self, request, *args, **kwargs):
-    #     print('*'*50)
-    #     token, created = Token.objects.get_or_create(user=request.user)
-    #     print(token.key)  
-    #     if request.user.is_authenticated:
-    #         print(request.user.email)
-    #         # print(request.user.password)
-    #         # User is authenticated
-            
-    #         return super().create(request, *args, **kwargs)
-    #     else:
-    #         # User is not authenticated
-    #         return Response({"message": "Not Authenticated"}, status=HTTP_401_UNAUTHORIZED)
-    # http_method_names = ["post"]
-    # def post(self,request, *args, **kwargs):
-    #     print('*'*50)
-    # def get_permissions(self):
-    #     print(self.request)
-    #     if self.action == 'create':
-    #         return [permissions.AllowAny()]
-
-    #     if  self.request.method == 'GET':
-    #         self.permission_classes = [permissions.IsAdminUser]
