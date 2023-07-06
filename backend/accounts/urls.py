@@ -3,7 +3,7 @@ from django.urls import include, path
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework import routers
 
-from .views import EmailTokenObtainPairView, ProfileViewSet, RegisterView,EmailConfirmationView
+from .views import EmailTokenObtainPairView,PasswordResetRequestView, PasswordResetView, ProfileViewSet, RegisterView,EmailConfirmationView
 
 router = routers.DefaultRouter()
 router.register('profiles', ProfileViewSet, basename='profile')
@@ -13,6 +13,11 @@ urlpatterns = [
     path('token/obtain/', EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('confirm-email/<str:uidb64>/<str:token>/', EmailConfirmationView.as_view(), name='email-confirmation'),
-   
+    # path('password-reset/', PasswordResetViewSet.as_view({ 'post': 'create'}), name='password_reset'),
+    path('password-reset/', PasswordResetRequestView.as_view(), name='password_reset'),
+    # path('reset-password/<uidb64>/<token>/', PasswordResetConfirmViewSet.as_view({ 'post': 'create'}), name='password_reset_confirm'),
+    path('reset-password/<uidb64>/<token>/', PasswordResetView.as_view(), name='password_reset_confirm'),
+    # url(r'^password_reset/confirm/(?P<token>.+)/$', password_reset_confirm, name='password_reset_confirm'),
     path('', include( router.urls)),
+    
 ]
