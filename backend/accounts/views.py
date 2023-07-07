@@ -14,7 +14,7 @@ from rest_framework import viewsets,permissions,generics ,status
 from .sendEmail import send_confirmation_email, send_password_reset_email
 
 from .models import CustomUser, Profile
-from .serializer import  PasswordResetRequestSerializer, PasswordResetSerializer, ProfileSerializer, UserSerializer, TokenObtainPairSerializer 
+from .serializer import  ObtainAuthTokenSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, ProfileSerializer, UserSerializer, TokenObtainPairSerializer 
 from django.contrib.auth import authenticate
 User = get_user_model()
 from django.core.mail import EmailMessage
@@ -26,46 +26,39 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 
 from copy import deepcopy
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.encoding import smart_str
 
 
 
 
-
-class RegisterView(APIView):
-    http_method_names = ['post']
-
+class RegisterView(generics.GenericAPIView):
+    serializer_class=UserSerializer
     def post(self, request,*args, **kwargs):
         serializer = UserSerializer(data=self.request.data)
-        if serializer.is_valid():
-            user=get_user_model().objects.create_user(**serializer.validated_data)
-          # Send confirmation email
-            # if not request.user.is_staff:
-            send_confirmation_email(user,request)
-            # return Response(status=HTTP_201_CREATED)
-            return Response({'message': 'User registered successfully. Please check your email for confirmation.'}, status=status.statusHTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST, data={'errors': serializer.errors})
-
+        serializer.is_valid(raise_exception=True)
+        user=get_user_model().objects.create_user(**serializer.validated_data)
+        # serializer.save()
+        # user = User.objects.get(email=serializer.data['email'])
+        send_confirmation_email(user, get_current_site(request))
+        return Response(status=status.HTTP_201_CREATED, data=serializer.data)
+    
 class EmailTokenObtainPairView(TokenObtainPairView):
-    serializer_class = TokenObtainPairSerializer
-
-    def post(self, request, *args, **kwargs):
-            serializer = self.get_serializer(data=request.data)
+        def post(self, request):
+            serializer = ObtainAuthTokenSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            email= request.data['email']
-            password= request.data['password']
-            user=authenticate(email=email, password=password)
-          
-     
-            if (not user.email_confirmed and not user.is_superuser):
-                return Response({'error': 'Email is not confirmed'}, status=status.HTTP_400_BAD_REQUEST)
-
-            token = RefreshToken.for_user(serializer.user)
-            return Response({
+            user = authenticate(**serializer.validated_data)
+            token = RefreshToken.for_user(user)
+            context={
                 'access': str(token.access_token),
                 'refresh': str(token)
-            })
-
+            }
+            
+            return Response(data=context, status=status.HTTP_200_OK)
+        
     
+          
+
 class EmailConfirmationView(generics.GenericAPIView):
     def get(self, request, uidb64, token):
         try:
@@ -100,45 +93,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-# class PasswordResetView(generics.GenericAPIView):
-#     def post(self, request):
-#         email = request.data.get('email')
-
-#         user = User.objects.get(email=email)
-#         if user:
-#             # Generate reset token
-#             token = default_token_generator.make_token(user)
-
-#             # Build reset password URL
-#             uid = urlsafe_base64_encode(force_bytes(user.pk))
-#             current_site = get_current_site(request)
-
-#             # Send reset password email
-#             subject = 'Password Reset'
-#             # reset_url = f"{current_site}/accounts/reset-password/{uid}/{token}/"
-#             message = render_to_string('password_reset_email.html', {
-#                 'user': user,
-#                  'uid': uid,
-#                  'token': token,
-#                  'current_site': current_site
-#             })
-#             # send_mail(subject, message, 'noreply@example.com', [user.email])
-#             email = EmailMessage(subject, message, to=[user.email])
-#             email.content_subtype = 'html'  
-#             email.send()
-
-       
-#         return Response(status=status.HTTP_200_OK)
-
-
-# class PasswordResetViewSet(viewsets.ViewSet):
-#     serializer_class = PasswordResetSerializer
-#     def create(self, request):
-#         serializer = self.serializer_class(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         email = serializer.validated_data['email']
-#         send_password_reset_email(email,request)
-#         return Response({'success': 'Password reset email sent'})
 class PasswordResetRequestView(APIView):
     def post(self, request):
         serializer = PasswordResetRequestSerializer(data=request.data)
@@ -153,15 +107,11 @@ class PasswordResetRequestView(APIView):
         send_password_reset_email(user,request)
         return Response({'detail': 'Password reset email has been sent.'})
     
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.encoding import smart_str
+
 class PasswordResetView(generics.GenericAPIView):
     def post(self, request,uidb64, token,*args,**kwargs):
         serializer = PasswordResetSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
-        # Verify the token's authenticity and validity
-        # user = User.objects.get(verification_token=token)
         id = smart_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(id=id)
         if not PasswordResetTokenGenerator().check_token(user, token):

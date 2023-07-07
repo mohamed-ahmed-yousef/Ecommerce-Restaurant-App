@@ -13,17 +13,31 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from rest_framework import serializers
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import RefreshToken
 
+class ObtainAuthTokenSerializer(serializers.Serializer):
+    email = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+    def validate(self, data):
+        user = authenticate(**data)
+        if user is None:
+            raise serializers.ValidationError({'error': 'Incorrect email or password'})
+        if (not user.email_confirmed and not user.is_superuser):
+            raise serializers.ValidationError({'error': 'Email is not confirmed'})
+        data['token'] =RefreshToken.for_user(user)
+        return data
+    
+    
 class TokenObtainPairSerializer(JwtTokenObtainPairSerializer):
     username_field = get_user_model().USERNAME_FIELD
 
 
-  
 
 class UserSerializer(serializers.ModelSerializer):
-
+    password = serializers.CharField(max_length=68, min_length=6, write_only=True)
     class Meta:
-        # model = get_user_model()
         model = CustomUser
         fields = ('first_name', 'last_name','email','password')
 
@@ -36,27 +50,13 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 
-#*************************
-
-class PasswordResetSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-
-    def validate_email(self, email):
-        user = get_user_model().objects.filter(email=email).first()
-        # user = CustomUser.objects.filter(email=email).first()
-   
-        if not user:
-            raise serializers.ValidationError({'email': 'User does not exist'})
-        return email
-    
-from django.contrib.auth.password_validation import validate_password
 
 
 
 class PasswordResetRequestSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
-    
+
 class PasswordResetSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=128)
     confirm_password = serializers.CharField(max_length=128)
