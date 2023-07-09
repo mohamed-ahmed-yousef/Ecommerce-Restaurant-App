@@ -42,14 +42,16 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('first_name', 'last_name','email','password')
 
 class ProfileSerializer(serializers.ModelSerializer):
-
-    
-
     class Meta:
         model = Profile
         fields = '__all__'
     
-
+    def create(self, validated_data):
+            profile = Profile.objects.create(**validated_data)           
+            user = profile.user
+            user.profile_completed = True
+            user.save()
+            return profile
 
 
 

@@ -16,7 +16,7 @@ admin.site.register(CustomUser, CustomUserAdmin)
 class ProfileAdmin(admin.ModelAdmin):
     fields = ['user', 'bio', 'profile_image', 'date_of_birth', 'phone_number']
 
-    list_display = ['user', 'bio', 'profile_image', 'date_of_birth', 'phone_number']
+    list_display = ['id','user', 'bio', 'profile_image', 'date_of_birth', 'phone_number']
 
 admin.site.register(Profile, ProfileAdmin)
 
