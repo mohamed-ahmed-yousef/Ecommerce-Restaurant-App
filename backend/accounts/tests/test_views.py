@@ -7,8 +7,10 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from rest_framework import status
 from django.contrib.auth import get_user_model, authenticate
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.http import urlsafe_base64_encode
 
-class TestView(TestCase):
+class Test_registr_View(TestCase):
     def setUp(self) :
         self.client = Client()
         self.user = CustomUser.objects.create(email='test@example.com')
@@ -21,7 +23,6 @@ class TestView(TestCase):
         response = self.client.post(url,{'email': 'test@gmail.com', 
                         'password': 'testtest','first_name': 'test', 'last_name': 'test'})
         self.assertEqual(response.status_code, 201)
-        
 
 class EmailConfirmationViewTests(TestCase):
     def setUp(self):
@@ -71,63 +72,80 @@ class EmailConfirmationViewTests(TestCase):
 
 
 
+        
+ 
 
-User = get_user_model()
-
-from django.test import TestCase
-from rest_framework import status
-
-# from accounts.views import EmailTokenObtainPairView
-# from django.contrib.auth.models import User
-
-class EmailTokenObtainPairViewTest(TestCase):
+from django.core import mail
+class PasswordResetRequestViewTest(TestCase):
     def setUp(self):
-        self.client  =  Client()
-        self.user = CustomUser.objects.create(
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(
+           
             email='test@example.com',
             password='testpassword',
-            first_name='test',
-            last_name='test',
-            # is_superuser=False,
-            # email_confirmed=True
         )
 
-    def test_obtain_auth_token(self):
+    def test_password_reset_request(self):
+        url=reverse('password_reset')
         data = {
             'email': 'test@example.com',
-            'password': 'testpassword'
         }
-        url=reverse('token_obtain_pair')
-        response = self.client.post(url,data)
+        response = self.client.post(url, data=data)
 
-        self.assertEqual(response.status_code, 200)
-        # self.assertIn('access', response.data)
-        # self.assertIn('refresh', response.data)
-        # self.assertEqual(str(self.user.refresh_token.access_token), response.data['access'])
-        # self.assertEqual(str(self.user.refresh_token), response.data['refresh'])
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, {'detail': 'Password reset email has been sent.'})
 
-#     def test_obtain_auth_token_incorrect_credentials(self):
-#         data = {
-#             'email': 'test@example.com',
-#             'password': 'wrongpassword'
-#         }
-#         request = self.factory.post('/auth/token/', data=data)
-#         response = self.view(request)
+        # Verify that a password reset email was sent
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, 'Password Reset')
 
-#         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-#         self.assertEqual(response.data, {'error': 'Incorrect email or password'})
+    def test_password_reset_request_invalid_email(self):
+        url=reverse('password_reset')
+        data = {
+            'email': 'invalid@example.com',
+        }
+        response = self.client.post(url, data=data)
 
-#     def test_obtain_auth_token_unconfirmed_email(self):
-#         self.user.email_confirmed = False
-#         self.user.save()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data, {'detail': 'User with this email address does not exist.'})
 
-#         data = {
-#             'email': 'test@example.com',
-#             'password': 'testpassword'
-#         }
-#         request = self.factory.post('/auth/token/', data=data)
-#         response = self.view(request)
 
-#         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-#         self.assertEqual(response.data, {'error': 'Email is not confirmed'})
-#         # self.assertEqual(response.data, {'error': [{'error': 'Email is not confirmed', 'code': 'invalid'}]})
+class PasswordResetViewTest(TestCase):
+    def setUp(self):
+        # Create a test user
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(
+            email='test@example.com',
+            password='password123'
+        )
+
+    def test_password_reset_view(self):
+        # Generate a password reset token for the test user
+        token_generator = PasswordResetTokenGenerator()
+        token = token_generator.make_token(self.user)
+
+        # Encode the user's ID for the URL parameter
+  
+        uidb64=urlsafe_base64_encode(force_bytes(self.user.pk))
+
+        # Define the request data
+        data = {
+            'password': 'newpassword123',
+            'confirm_password': 'newpassword123'
+        }
+
+        # Generate the URL for the password reset endpoint
+        url = reverse('password_reset_confirm', args=[uidb64, token])
+
+        # Make a POST request to reset the password
+        response = self.client.post(url, data, format='json')
+
+        # Check the response status code and content
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, {'detail': 'Password has been reset successfully.'})
+
+        # Refresh the user object from the database
+        self.user.refresh_from_db()
+
+        # Check that the password has been updated
+        self.assertTrue(self.user.check_password(data['password']))

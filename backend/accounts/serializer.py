@@ -30,8 +30,8 @@ class ObtainAuthTokenSerializer(serializers.Serializer):
         return data
     
     
-class TokenObtainPairSerializer(JwtTokenObtainPairSerializer):
-    username_field = get_user_model().USERNAME_FIELD
+# class TokenObtainPairSerializer(JwtTokenObtainPairSerializer):
+#     username_field = get_user_model().USERNAME_FIELD
 
 
 
@@ -42,11 +42,13 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('first_name', 'last_name','email','password')
 
 class ProfileSerializer(serializers.ModelSerializer):
-   # user = UserSerializer()
+
+    
 
     class Meta:
         model = Profile
         fields = '__all__'
+    
 
 
 

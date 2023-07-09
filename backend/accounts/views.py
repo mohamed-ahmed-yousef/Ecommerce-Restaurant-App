@@ -1,9 +1,8 @@
-from django.conf import settings
 from django.contrib.auth import get_user_model
 
-from django.utils.encoding import force_bytes, force_str 
+from django.utils.encoding import  force_str 
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.http import  urlsafe_base64_decode
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,23 +12,15 @@ from rest_framework import viewsets,permissions,generics ,status
 
 from .sendEmail import send_confirmation_email, send_password_reset_email
 
-from .models import CustomUser, Profile
-from .serializer import  ObtainAuthTokenSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, ProfileSerializer, UserSerializer, TokenObtainPairSerializer 
+from .models import  Profile
+from .serializer import  ObtainAuthTokenSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, ProfileSerializer, UserSerializer 
 from django.contrib.auth import authenticate
 User = get_user_model()
-from django.core.mail import EmailMessage
 
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
 
-from copy import deepcopy
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import smart_str
-
-
 
 
 class RegisterView(generics.GenericAPIView):
@@ -43,6 +34,7 @@ class RegisterView(generics.GenericAPIView):
         send_confirmation_email(user, get_current_site(request))
         return Response(status=status.HTTP_201_CREATED, data=serializer.data)
     
+
 class EmailTokenObtainPairView(TokenObtainPairView):
         def post(self, request):
             serializer = ObtainAuthTokenSerializer(data=request.data)
@@ -55,8 +47,6 @@ class EmailTokenObtainPairView(TokenObtainPairView):
             }
             
             return Response(data=context, status=status.HTTP_200_OK)
-        
-    
           
 
 class EmailConfirmationView(generics.GenericAPIView):
@@ -74,25 +64,6 @@ class EmailConfirmationView(generics.GenericAPIView):
             return Response({'message': 'Invalid link.'})
         
 
-class ProfileViewSet(viewsets.ModelViewSet):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    def create(self, request, *args, **kwargs):
-        mutable_data = deepcopy(request.data)
-
-        user=request.user
-        user.profile_completed=True
-        user.save()
-
-        mutable_data['user'] =user.id
-        serializer = self.get_serializer(data=mutable_data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-
 class PasswordResetRequestView(APIView):
     def post(self, request):
         serializer = PasswordResetRequestSerializer(data=request.data)
@@ -104,8 +75,8 @@ class PasswordResetRequestView(APIView):
         except User.DoesNotExist:
             return Response({'detail': 'User with this email address does not exist.'}, status=400)
 
-        send_password_reset_email(user,request)
-        return Response({'detail': 'Password reset email has been sent.'})
+        send_password_reset_email(user,get_current_site(request))
+        return Response({'detail': 'Password reset email has been sent.'},status.HTTP_200_OK)
     
 
 class PasswordResetView(generics.GenericAPIView):
@@ -122,3 +93,23 @@ class PasswordResetView(generics.GenericAPIView):
         user.save()
 
         return Response({'detail': 'Password has been reset successfully.'})
+    
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+ 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] =  self.request.user.id
+        return context
+    
+    def create(self, request, *args, **kwargs):
+       
+        serializer = ProfileSerializer(data=self.get_serializer_context())
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
