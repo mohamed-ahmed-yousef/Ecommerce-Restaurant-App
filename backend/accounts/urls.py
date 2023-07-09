@@ -6,11 +6,11 @@ from rest_framework import routers
 from .views import EmailTokenObtainPairView,PasswordResetRequestView, PasswordResetView, ProfileViewSet, RegisterView,EmailConfirmationView
 
 router = routers.DefaultRouter()
-router.register('profiles', ProfileViewSet, basename='profile')
+router.register('profile', ProfileViewSet, basename='profile')
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
-    path('token/obtain/', EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/obtain/', EmailTokenObtainPairView.as_view(), name='tokenOBtain'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('confirm-email/<str:uidb64>/<str:token>/', EmailConfirmationView.as_view(), name='email-confirmation'),
     path('password-reset/', PasswordResetRequestView.as_view(), name='password_reset'),

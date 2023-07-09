@@ -165,3 +165,5 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=15),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=15),
 }
+
+# SESSION_EXPIRE_AT_BROWSER_CLOSE=True

@@ -24,20 +24,20 @@ def send_email(user,current_site,file_link,mail_subject,token):
     email.content_subtype = 'html'  
     email.send()
 
-def send_confirmation_email(user,request):
+def send_confirmation_email(user,current_site):
     # token = default_token_generator.make_token(user)
     token= RefreshToken.for_user(user).access_token
     mail_subject = 'Activate your account'
     file_link='/run/media/mohamed/New Volume/Documents/programing/django/restaurant/Ecommerce-Restaurant-App/backend/accounts/templates/activation_email.html'
-    send_email(user,request,file_link,mail_subject,token)
+    send_email(user,current_site,file_link,mail_subject,token)
 
 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from rest_framework.authtoken.models import Token
-def send_password_reset_email(user,request):
+def send_password_reset_email(user,current_site):
     token = PasswordResetTokenGenerator().make_token(user)
     mail_subject = 'Password Reset'
     file_link='password_reset_email.html'
-    send_email(user,request,file_link,mail_subject,token)
+    send_email(user,current_site,file_link,mail_subject,token)
 
 

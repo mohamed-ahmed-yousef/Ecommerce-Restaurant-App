@@ -9,5 +9,6 @@ class TestUrls(SimpleTestCase):
         url=reverse('register')
         self.assertEqual(resolve(url).func.view_class,RegisterView)
     def test_obtain_url_resolver(self):
-        url=reverse('token_obtain_pair')
+        url=reverse('tokenOBtain')
         self.assertEqual(resolve(url).func.view_class,EmailTokenObtainPairView)
+        # url=reverse('tokenOBtain')
