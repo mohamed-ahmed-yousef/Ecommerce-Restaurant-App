@@ -36,3 +36,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
             return product
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        images_data =ProductImageSerializer(ProductImage.objects.filter(product=instance),many=True).data
+        data['images'] = images_data
+        return data
