@@ -1,2 +1,2 @@
 # Ecommerce-Restaurant-App
-- Ecommerce App
+- Ecommerce Restaurant app
