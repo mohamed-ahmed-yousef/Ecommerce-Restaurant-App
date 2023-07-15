@@ -26,6 +26,8 @@ from django.utils.encoding import smart_str
 class RegisterView(generics.GenericAPIView):
     serializer_class=UserSerializer
     def post(self, request,*args, **kwargs):
+        # print('*'*100)
+        # print(request)
         serializer = UserSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         user=get_user_model().objects.create_user(**serializer.validated_data)
@@ -48,7 +50,9 @@ class EmailTokenObtainPairView(TokenObtainPairView):
             
             return Response(data=context, status=status.HTTP_200_OK)
           
-
+        def get(self, request,*args, **kwargs):
+            print('*'*100)
+            print('get')
 class EmailConfirmationView(generics.GenericAPIView):
     def get(self, request, uidb64, token):
         try:

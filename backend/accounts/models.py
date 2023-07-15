@@ -44,8 +44,8 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = CustomUserManager()
-    first_name = models.CharField(max_length=50,blank=False)
-    last_name = models.CharField(max_length=50,blank=False)
+    name = models.CharField(max_length=50,blank=True,default='')
+    # last_name = models.CharField(max_length=50,blank=False)
     email_confirmed = models.BooleanField(_('email confirmed'), default=False)
     profile_completed = models.BooleanField(default=False)
     
