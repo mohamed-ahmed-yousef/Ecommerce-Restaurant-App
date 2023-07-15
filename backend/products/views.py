@@ -37,13 +37,8 @@ class CampaignViewSet(viewsets.ModelViewSet):
 
 
 from django.core.paginator import Paginator
-<<<<<<< HEAD
 from .models import Restaurant
 from rest_framework import  permissions
-=======
-from django.shortcuts import render
-from .models import Restaurant
->>>>>>> 907b6a091ace3b183834e7234fa110936bd3f235
 
 from rest_framework.pagination import PageNumberPagination
 class MyPaginationClass(PageNumberPagination):
@@ -52,11 +47,7 @@ class MyPaginationClass(PageNumberPagination):
     max_page_size = 100  
 class index(APIView):
     pagination_class = MyPaginationClass
-<<<<<<< HEAD
     # permission_classes = [permissions.IsAdminUser]
-=======
-    
->>>>>>> 907b6a091ace3b183834e7234fa110936bd3f235
     def get(self, request):
 
         paginator = self.pagination_class()
