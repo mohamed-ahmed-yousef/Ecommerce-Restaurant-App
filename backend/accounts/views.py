@@ -33,7 +33,7 @@ class RegisterView(generics.GenericAPIView):
         user=get_user_model().objects.create_user(**serializer.validated_data)
         # serializer.save()
         # user = User.objects.get(email=serializer.data['email'])
-        send_confirmation_email(user, get_current_site(request))
+        # send_confirmation_email(user, get_current_site(request))
         return Response(status=status.HTTP_201_CREATED, data=serializer.data)
     
 
