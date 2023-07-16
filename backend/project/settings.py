@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',  # cors headers
     'accounts.apps.AccountsConfig',
     'products',
+    'restaurants',
     
     
 

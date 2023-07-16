@@ -1,6 +1,5 @@
-from dataclasses import field
 from rest_framework import serializers
-from .models import Campaign, Category, ProductImage, Restaurant, Discount, Product
+from .models import  Category, ProductImage, Discount, Product
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,15 +41,3 @@ class ProductSerializer(serializers.ModelSerializer):
         data['images'] = images_data
         return data
 
-class RestaurantSerializer(serializers.ModelSerializer):
-     class Meta:
-        model = Restaurant
-        fields ='__all__'
-
-
-
-class CampaignSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Campaign
-        fields = '__all__'
-    #  'end_date': '2023-07-31',

@@ -3,8 +3,12 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from .models import Campaign, Category, ProductImage, Restaurant, Discount, Product
-from .serializers import CampaignSerializer, CategorySerializer, DiscountSerializer, ProductImageSerializer, ProductSerializer, RestaurantSerializer
+from restaurants.models import Campaign,Restaurant
+from restaurants.serializers import CampaignSerializer, RestaurantSerializer
+
+from .models import  Category, ProductImage, Discount, Product
+from .serializers import  CategorySerializer, DiscountSerializer, ProductImageSerializer, ProductSerializer
+from rest_framework import  permissions
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -27,18 +31,9 @@ class ProductViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=201, headers=headers)
 
-class RestaurantViewSet(viewsets.ModelViewSet):
-    queryset = Restaurant.objects.all()
-    serializer_class=RestaurantSerializer
-
-class CampaignViewSet(viewsets.ModelViewSet):
-    queryset = Campaign.objects.all()
-    serializer_class = CampaignSerializer
 
 
-from django.core.paginator import Paginator
-from .models import Restaurant
-from rest_framework import  permissions
+
 
 from rest_framework.pagination import PageNumberPagination
 class MyPaginationClass(PageNumberPagination):

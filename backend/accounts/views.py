@@ -13,7 +13,7 @@ from rest_framework import viewsets,permissions,generics ,status
 from .sendEmail import send_confirmation_email, send_password_reset_email
 
 from .models import  Profile
-from .serializer import  ObtainAuthTokenSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, ProfileSerializer, UserSerializer 
+from .serializers import  ObtainAuthTokenSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, ProfileSerializer, UserSerializer 
 from django.contrib.auth import authenticate
 User = get_user_model()
 

@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from accounts.views import EmailTokenObtainPairView
-from accounts.serializer import ObtainAuthTokenSerializer
+from backend.accounts.serializers import ObtainAuthTokenSerializer
 from accounts.models import CustomUser, Profile
 
 
