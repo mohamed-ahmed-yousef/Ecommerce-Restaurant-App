@@ -38,9 +38,9 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     discount = models.ForeignKey(Discount, on_delete=models.SET_NULL, null=True, blank=True)
     restaurant=models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-'''
-description , available_quantity , created_at , updated_at , category , discount, restaurant
-'''
+    '''
+    description , available_quantity , created_at , updated_at , category , discount, restaurant
+    '''
     def __str__(self):
         return self.name
     

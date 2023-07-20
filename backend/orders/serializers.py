@@ -6,16 +6,16 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ['item', 'quantity', 'item_name']
-
+        fields = ['item', 'quantity', 'item_name','order']
+    
 class OrderSerializer(serializers.ModelSerializer):
     order_items = OrderItemSerializer(many=True, read_only=True)
     customer_name = serializers.ReadOnlyField(source='customer.name')
 
     class Meta:
         model = Order
-        fields = ['id', 'delivery_option', 'customer', 'customer_name', 'restaurant', 'total_price', 'order_items']
-
+        fields = ['id', 'delivery_option', 'customer', 'customer_name', 'restaurant', 'total_price', 'order_items','time_preferred']
+        read_only_fields = ('total_price',)
 
 from rest_framework import serializers
 from .models import DeliveryCharge

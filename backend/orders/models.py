@@ -1,3 +1,4 @@
+from random import choices
 import uuid
 from django.db import models
 
@@ -9,13 +10,14 @@ delivery_choices = (
     ('delivery', 'delivery'),
     ('takeaway', 'takeaway'),
 )
+
 class Order(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    delivery_option = models.Choices(delivery_choices, default='takeaway')
+    delivery_option = models.CharField(choices= delivery_choices ,max_length=50)
     time_preferred = models.DateTimeField()
     customer=models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
     restaurant=models.ForeignKey('restaurants.Restaurant', on_delete=models.CASCADE)
-    total_price = models.DecimalField(max_digits=8, decimal_places=2)
+    total_price = models.DecimalField(max_digits=8, decimal_places=2,default="0")
     def str__(self):
         return f"Order #{self.order_number} for {self.customer.name}"
     

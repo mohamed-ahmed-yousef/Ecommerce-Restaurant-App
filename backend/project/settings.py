@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'products',
     'restaurants',
+    'orders',
+    # 'drf-spectacular',
+    'drf_yasg',
     
     
 
