@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework import viewsets,permissions
 
-from backend.products.models import Product
+from products.models import Product
 from .models import DeliveryCharge, Order, OrderItem
 from .serializers import DeliveryChargeSerializer, OrderSerializer, OrderItemSerializer
 from rest_framework.response import Response
@@ -28,8 +28,8 @@ class DeliveryChargeViewSet(viewsets.ModelViewSet):
 def calculate_delivery_total_price(order_items_data):
     total_price = 0
     for item_data in order_items_data:
-        item_quantity = item_data.get('quantity', 1)
-        item_price=  Product.objects.get_price(item_data['product'])
+        item_quantity = item_data['quantity']
+        item_price=  Product.objects.get(pk=item_data['item']).price
         total_price+=item_price *item_quantity
     return total_price
 
@@ -40,20 +40,25 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         order_data = request.data
-        order_items_data = order_data.pop('order_items', [])
+        order_items_data = order_data['order_items']
         serializer = self.get_serializer(data=order_data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         order = serializer.instance
         order_items = []
+      
         for item_data in order_items_data:
             item_data['order'] = order.id
             order_item_serializer = OrderItemSerializer(data=item_data)
+           
             order_item_serializer.is_valid(raise_exception=True)
             order_item_serializer.save()
+      
             order_items.append(order_item_serializer.data)
-
-        calculate_delivery_total_price(order_items_data)
+     
+        total=calculate_delivery_total_price(order_items_data)
+        order.total_price=total
+        order.save()
         
         headers = self.get_success_headers(serializer.data)
         return Response(
