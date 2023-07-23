@@ -5,7 +5,7 @@ from rest_framework import viewsets,permissions
 
 from products.models import Product
 from .models import DeliveryCharge, Order, OrderItem
-from .serializers import DeliveryChargeSerializer, OrderSerializer, OrderItemSerializer
+from .serializers import DeliveryChargeSerializer, OrderSerializer, OrderItemSerializer, OrderwithItemsSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -36,37 +36,37 @@ def calculate_delivery_total_price(order_items_data):
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+    serializer_class = OrderwithItemsSerializer
 
-    def create(self, request, *args, **kwargs):
-        order_data = request.data
-        order_items_data = order_data['order_items']
-        serializer = self.get_serializer(data=order_data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        order = serializer.instance
-        order_items = []
+    # def create(self, request, *args, **kwargs):
+    #     order_data = request.data
+    #     order_items_data = order_data['order_items']
+    #     serializer = self.get_serializer(data=order_data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     order = serializer.instance
+    #     order_items = []
       
-        for item_data in order_items_data:
-            item_data['order'] = order.id
-            order_item_serializer = OrderItemSerializer(data=item_data)
+    #     for item_data in order_items_data:
+    #         item_data['order'] = order.id
+    #         order_item_serializer = OrderItemSerializer(data=item_data)
            
-            order_item_serializer.is_valid(raise_exception=True)
-            order_item_serializer.save()
+    #         order_item_serializer.is_valid(raise_exception=True)
+    #         order_item_serializer.save()
       
-            order_items.append(order_item_serializer.data)
+    #         order_items.append(order_item_serializer.data)
      
-        total=calculate_delivery_total_price(order_items_data)
-        order.total_price=total
-        order.save()
+    #     total=calculate_delivery_total_price(order_items_data)
+    #     order.total_price=total
+    #     order.save()
         
-        headers = self.get_success_headers(serializer.data)
-        return Response(
-            {
-                'order': serializer.data,
-                'order_items': order_items
-            },
-            status=status.HTTP_201_CREATED,
-            headers=headers
-        )
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(
+    #         {
+    #             'order': serializer.data,
+    #             'order_items': order_items
+    #         },
+    #         status=status.HTTP_201_CREATED,
+    #         headers=headers
+    #     )
 

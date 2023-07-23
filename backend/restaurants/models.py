@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 class Restaurant(models.Model):
-    id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
     location = models.CharField(max_length=150)
     house= models.CharField(max_length=100)

@@ -45,7 +45,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('', include('restaurants.urls')),
     path('', include('products.urls')),
-    path('order/', include('orders.urls')),
+    path('', include('orders.urls')),
 
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

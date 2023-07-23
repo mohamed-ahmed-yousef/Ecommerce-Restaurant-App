@@ -1,0 +1,24 @@
+[
+  {
+    "model": "orders.deliverycharge",
+    "pk": 1,
+    "fields": { "region": "Region 1", "charge": 5.0 }
+  },
+  {
+    "model": "orders.orderitem",
+    "pk": 1,
+    "fields": { "item": 1, "quantity": 2 }
+  },
+  {
+    "model": "orders.order",
+    "pk": 1,
+    "fields": {
+      "delivery_option": "takeaway",
+      "time_preferred": "2021-01-01T00:00:00Z",
+      "customer": 1,
+      "restaurant": 1,
+      "total_price": 50.0,
+      "order_item": 1
+    }
+  }
+]
