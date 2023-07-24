@@ -1,11 +1,10 @@
 from django.shortcuts import render
 
-# Create your views here.
 from rest_framework import viewsets,permissions
 
 from products.models import Product
 from .models import DeliveryCharge, Order, OrderItem
-from .serializers import DeliveryChargeSerializer, OrderSerializer, OrderItemSerializer, OrderwithItemsSerializer
+from .serializers import DeliveryChargeSerializer, OrderSerializer, OrderItemSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -25,48 +24,39 @@ class DeliveryChargeViewSet(viewsets.ModelViewSet):
             return super().get_permissions()
 
 
-def calculate_delivery_total_price(order_items_data):
-    total_price = 0
-    for item_data in order_items_data:
-        item_quantity = item_data['quantity']
-        item_price=  Product.objects.get(pk=item_data['item']).price
-        total_price+=item_price *item_quantity
-    return total_price
 
+class orderItemViewSet(viewsets.ModelViewSet):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
-    serializer_class = OrderwithItemsSerializer
+    serializer_class = OrderSerializer
 
-    # def create(self, request, *args, **kwargs):
-    #     order_data = request.data
-    #     order_items_data = order_data['order_items']
-    #     serializer = self.get_serializer(data=order_data)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_create(serializer)
-    #     order = serializer.instance
-    #     order_items = []
-      
-    #     for item_data in order_items_data:
-    #         item_data['order'] = order.id
-    #         order_item_serializer = OrderItemSerializer(data=item_data)
-           
-    #         order_item_serializer.is_valid(raise_exception=True)
-    #         order_item_serializer.save()
-      
-    #         order_items.append(order_item_serializer.data)
-     
-    #     total=calculate_delivery_total_price(order_items_data)
-    #     order.total_price=total
-    #     order.save()
-        
-    #     headers = self.get_success_headers(serializer.data)
-    #     return Response(
-    #         {
-    #             'order': serializer.data,
-    #             'order_items': order_items
-    #         },
-    #         status=status.HTTP_201_CREATED,
-    #         headers=headers
-    #     )
+
+class OrderwithItemViewSet(viewsets.ModelViewSet):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
+    def add_order(self,data,order):
+        modify_items=[]
+        for item_data in data:
+            item_data['order']=order.id
+            modify_items.append(item_data)
+        return modify_items
+    
+    def create(self, request, *args, **kwargs):
+        order = OrderSerializer(data=request.data)
+        order.is_valid(raise_exception=True)
+        order.save()
+        order_items_data=self.add_order(request.data['order_items'],order.instance)
+        order_items=OrderItemSerializer(data=order_items_data,many=True)
+        order_items.is_valid(raise_exception=True)
+        order_items.save()
+        response_data = {
+        'order':OrderSerializer(Order.objects.get(id=order.instance.id)).data,
+        'order_items': order_items.data,
+        }
+        return Response(status=status.HTTP_201_CREATED, data=response_data)
+
+
 

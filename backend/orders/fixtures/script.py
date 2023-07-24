@@ -23,7 +23,6 @@ orders_data = [
             "customer": 1,  # Replace with the ID of the CustomUser who placed the order
             "restaurant": 1,  # Replace with the ID of the Restaurant associated with the order
             "total_price": 50.00 , # Replace with the actual total price of the order
-               "order_item":1, 
         }
     },
     # Add more orders as needed...
@@ -36,25 +35,26 @@ order_items_data = [
         "pk": 1,
         "fields": {
              "item":1, # Corresponds to the ID of the first order in orders_data
-            "quantity": 2  # Replace with the actual quantity of this order item
+            "quantity": 2,  # Replace with the actual quantity of this order item
+            'order': 1
         }
     },
     # Add more order items as needed...
 ]
 
 # Generate data for DeliveryCharge
-delivery_charges_data = [
-    {
-        "model": "orders.deliverycharge",
-        "pk": 1,
-        "fields": {
-            "region": "Region 1",  # Replace with the region name
-            "charge":5.00  # Replace with the actual delivery charge for this region
-        }
-    },
-    # Add more delivery charges as needed...
-]
-fixture_data = delivery_charges_data + order_items_data+orders_data
+# delivery_charges_data = [
+#     {
+#         "model": "orders.deliverycharge",
+#         "pk": 1,
+#         "fields": {
+#             "region": "Region 1",  # Replace with the region name
+#             "charge":5.00  # Replace with the actual delivery charge for this region
+#         }
+#     },
+#     # Add more delivery charges as needed...
+# ]
+fixture_data =   order_items_data+orders_data
 current_directory = os.path.dirname(os.path.abspath(__file__))
 
 # Set the filename for the fixture data JSON file
