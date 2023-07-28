@@ -13,7 +13,7 @@ from rest_framework import viewsets,permissions,generics ,status
 from .sendEmail import send_confirmation_email, send_password_reset_email
 
 from .models import  Profile
-from .serializer import  ObtainAuthTokenSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, ProfileSerializer, UserSerializer 
+from .serializers import  ObtainAuthTokenSerializer, PasswordResetRequestSerializer, PasswordResetSerializer, ProfileSerializer, UserSerializer 
 from django.contrib.auth import authenticate
 User = get_user_model()
 
@@ -38,6 +38,7 @@ class RegisterView(generics.GenericAPIView):
     
 
 class EmailTokenObtainPairView(TokenObtainPairView):
+        serializer_class = ObtainAuthTokenSerializer
         def post(self, request):
             serializer = ObtainAuthTokenSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -54,6 +55,8 @@ class EmailTokenObtainPairView(TokenObtainPairView):
             print('*'*100)
             print('get')
 class EmailConfirmationView(generics.GenericAPIView):
+    def get_serializer(self):
+        return 
     def get(self, request, uidb64, token):
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
@@ -69,6 +72,7 @@ class EmailConfirmationView(generics.GenericAPIView):
         
 
 class PasswordResetRequestView(APIView):
+    serializer_class = PasswordResetRequestSerializer
     def post(self, request):
         serializer = PasswordResetRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -84,6 +88,7 @@ class PasswordResetRequestView(APIView):
     
 
 class PasswordResetView(generics.GenericAPIView):
+    serializer_class=PasswordResetSerializer
     def post(self, request,uidb64, token,*args,**kwargs):
         serializer = PasswordResetSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

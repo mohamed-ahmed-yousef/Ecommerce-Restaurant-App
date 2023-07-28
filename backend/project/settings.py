@@ -45,6 +45,10 @@ INSTALLED_APPS = [
     'corsheaders',  # cors headers
     'accounts.apps.AccountsConfig',
     'products',
+    'restaurants',
+    'orders',
+    # 'drf-spectacular',
+    'drf_yasg',
     
     
 
