@@ -1,7 +1,7 @@
 
 from rest_framework import viewsets
 
-from backend.accounts.permissions import CustomStaffPermission
+from accounts.permissions import CustomStaffPermission
 
 from .models import Campaign ,Restaurant
 from .serializers import CampaignSerializer, RestaurantSerializer

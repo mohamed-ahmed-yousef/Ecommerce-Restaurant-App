@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.response import Response
 from accounts.permissions import CustomStaffPermission
-from backend.products.pagination import MyPaginationClass
+from products.pagination import MyPaginationClass
 
 from restaurants.models import Campaign,Restaurant
 from restaurants.serializers import CampaignSerializer, RestaurantSerializer
