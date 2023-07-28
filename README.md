@@ -39,14 +39,7 @@ Once the server is running, you can access the website at `http://localhost:8000
 
 The following API endpoints are available:
 
-- `GET /api/products/`: Get a list of all products.
-- `GET /api/products/{id}/`: Get details of a specific product.
-- `GET /api/categories/`: Get a list of all product categories.
-- `POST /api/orders/`: Create a new order.
-- `GET /api/orders/`: Get a list of all orders.
-- `GET /api/orders/{id}/`: Get details of a specific order.
-- `POST /api/auth/register/`: Register a new user.
-- `POST /api/auth/login/`: Log in as a user.
+[swagger](https://app.swaggerhub.com/apis-docs/MH1779371_1/restaurant/1.0.0)
 
 ## Contributing
 
@@ -63,4 +56,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-If you have any questions or suggestions, please feel free to contact us at `contact@restaurantwebsite.com`.
+If you have any questions or suggestions, please feel free to contact us 
+
+
