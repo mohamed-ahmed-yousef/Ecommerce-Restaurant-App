@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from rest_framework import viewsets,permissions
+from rest_framework import viewsets,permissions,authentication
 
 from products.models import Product
 from .models import DeliveryCharge, Order, OrderItem
@@ -25,18 +25,24 @@ class DeliveryChargeViewSet(viewsets.ModelViewSet):
 
 
 
-class orderItemViewSet(viewsets.ModelViewSet):
+class OrderItemViewSet(viewsets.ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
+
+    
+    
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class OrderwithItemViewSet(viewsets.ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
+    # authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
     def add_order(self,data,order):
         modify_items=[]
         for item_data in data:
@@ -45,13 +51,19 @@ class OrderwithItemViewSet(viewsets.ModelViewSet):
         return modify_items
     
     def create(self, request, *args, **kwargs):
-        order = OrderSerializer(data=request.data)
+        order_data=request.data
+        order_data['customer']= request.user.id
+
+        order = OrderSerializer(data=order_data)
         order.is_valid(raise_exception=True)
         order.save()
+
         order_items_data=self.add_order(request.data['order_items'],order.instance)
+
         order_items=OrderItemSerializer(data=order_items_data,many=True)
         order_items.is_valid(raise_exception=True)
         order_items.save()
+
         response_data = {
         'order':OrderSerializer(Order.objects.get(id=order.instance.id)).data,
         'order_items': order_items.data,
@@ -59,4 +71,7 @@ class OrderwithItemViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_201_CREATED, data=response_data)
 
 
-
+    def get(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = OrderSerializer(queryset, many=True)
+        return Response(serializer.data)

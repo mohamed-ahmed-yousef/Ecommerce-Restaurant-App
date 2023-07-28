@@ -21,8 +21,8 @@ class Order(models.Model):
     restaurant=models.ForeignKey('restaurants.Restaurant', on_delete=models.CASCADE)
     total_price = models.DecimalField(max_digits=8, decimal_places=2,default="0")
     # order_items = models.ManyToManyField(OrderItem, related_name='order_items')
-    def str__(self):
-        return f"Order #{self.order_number} for {self.customer.name}"
+    # def str__(self):
+    #     return f"Order #{self.order_number} for {self.customer.name}"
     
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
