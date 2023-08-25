@@ -10,9 +10,9 @@ from .serializers import CampaignSerializer, RestaurantSerializer
 class RestaurantViewSet(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class=RestaurantSerializer
-    permission_classes = [CustomStaffPermission]
+    # permission_classes = [CustomStaffPermission]
 
 class CampaignViewSet(viewsets.ModelViewSet):
     queryset = Campaign.objects.all()
     serializer_class = CampaignSerializer
-    permission_classes = [CustomStaffPermission]
+    # permission_classes = [CustomStaffPermission]
