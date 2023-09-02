@@ -28,6 +28,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
+# ALLOWED_HOSTS = ['*','.vercel.app', '.now.sh']
 ALLOWED_HOSTS = ['*','.vercel.app', '.now.sh']
 # Application definition
 
@@ -92,13 +93,22 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME':'postgres',
+        'USER': 'postgres',
+        'PASSWORD':'@##moamed##',
+        'HOST': 'db.wlrrgqugsepxkdrjblpu.supabase.co',
+        'PORT':'5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -184,11 +194,19 @@ SIMPLE_JWT = {
 # BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 
-MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT =  os.path.join(BASE_DIR, 'static/media')
+# MEDIA_URL = '/static/media/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+
+# Media files (user-uploaded content)
 MEDIA_URL = '/media/'
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CORS_ORIGIN_ALLOW_ALL = True
 
 # DATABASES = {
@@ -202,3 +220,4 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     }
 # }
 # WSGI_APPLICATION = 'vercel_app.wsgi.app'
+
