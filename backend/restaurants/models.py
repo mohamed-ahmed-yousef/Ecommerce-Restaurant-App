@@ -23,7 +23,6 @@ class Campaign(models.Model):
     end_date = models.DateField()
     description = models.TextField()
     image = models.ImageField(upload_to='product_images/')
-    restaurant=models.ManyToManyField(Restaurant, blank=True )
     def __str__(self):
         return self.name
     

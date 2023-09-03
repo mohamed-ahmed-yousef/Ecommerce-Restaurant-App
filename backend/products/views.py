@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 
 from rest_framework import viewsets
 from rest_framework.response import Response
-from accounts.permissions import CustomStaffPermission
+# from accounts.permissions import CustomStaffPermission
 from products.pagination import MyPaginationClass
 
 from restaurants.models import Campaign,Restaurant
@@ -17,20 +17,20 @@ from rest_framework import  permissions
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [CustomStaffPermission]
+    # permission_classes = [CustomStaffPermission]
     
 
 class DiscountViewSet(viewsets.ModelViewSet):
     queryset = Discount.objects.all()
     serializer_class = DiscountSerializer
-    permission_classes = [CustomStaffPermission]
+    # permission_classes = [CustomStaffPermission]
 
     
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [CustomStaffPermission]
+    # permission_classes = [CustomStaffPermission]
     def perform_create(self, serializer):
         serializer.save()
     def create(self, request, *args, **kwargs):
