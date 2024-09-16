@@ -1,0 +1,337 @@
+[
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "admin",
+            "model": "logentry"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "auth",
+            "model": "permission"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "auth",
+            "model": "group"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "contenttypes",
+            "model": "contenttype"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "sessions",
+            "model": "session"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "authtoken",
+            "model": "token"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "authtoken",
+            "model": "tokenproxy"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "accounts",
+            "model": "customuser"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "accounts",
+            "model": "profile"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "products",
+            "model": "category"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "products",
+            "model": "discount"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "products",
+            "model": "product"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "products",
+            "model": "productimage"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "restaurants",
+            "model": "restaurant"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "restaurants",
+            "model": "campaign"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "orders",
+            "model": "order"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "orders",
+            "model": "orderitem"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "app_label": "orders",
+            "model": "deliverycharge"
+        }
+    },
+    {
+        "model": "restaurants.restaurant",
+        "pk": 1,
+        "fields": {
+            "name": "mm mm",
+            "location": "22x65y",
+            "house": "ad",
+            "road": "ad",
+            "city": "test2 city",
+            "delivery_time": "20-40",
+            "min_order": 4,
+            "rate": "4",
+            "image": ""
+        }
+    },
+    {
+        "model": "restaurants.campaign",
+        "pk": 1,
+        "fields": {
+            "name": "mm mm",
+            "start_date": "2023-08-26",
+            "end_date": "2023-08-09",
+            "description": "ad",
+            "image": "product_images/macOS-mojave-Desert-5_K5BcKcW.jpg",
+            "restaurant": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "restaurants.campaign",
+        "pk": 2,
+        "fields": {
+            "name": "ali ali",
+            "start_date": "2023-08-26",
+            "end_date": "2023-08-19",
+            "description": "fg",
+            "image": "product_images/Untitled.jpg",
+            "restaurant": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "restaurants.campaign",
+        "pk": 3,
+        "fields": {
+            "name": "ali ali",
+            "start_date": "2023-08-26",
+            "end_date": "2023-08-19",
+            "description": "fg",
+            "image": "product_images/Untitled_TX4cb7r.jpg",
+            "restaurant": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "restaurants.campaign",
+        "pk": 4,
+        "fields": {
+            "name": "ali ali",
+            "start_date": "2023-08-26",
+            "end_date": "2023-08-19",
+            "description": "fg",
+            "image": "product_images/Untitled_aHsnXTw.jpg",
+            "restaurant": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "restaurants.campaign",
+        "pk": 5,
+        "fields": {
+            "name": "mm mm",
+            "start_date": "2023-08-26",
+            "end_date": "2023-08-03",
+            "description": "ttt",
+            "image": "product_images/macOS-mojave-Desert-5.jpg",
+            "restaurant": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "restaurants.campaign",
+        "pk": 6,
+        "fields": {
+            "name": "mm mm",
+            "start_date": "2023-08-26",
+            "end_date": "2023-08-17",
+            "description": "96",
+            "image": "product_images/article_291139_the-top-10-healthiest-foods-for-k_-02-4b745e57928c4786a61b_vZMQiXm.jpg",
+            "restaurant": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "restaurants.campaign",
+        "pk": 7,
+        "fields": {
+            "name": "mm mm",
+            "start_date": "2023-08-26",
+            "end_date": "2023-08-17",
+            "description": "96",
+            "image": "product_images/article_291139_the-top-10-healthiest-foods-for-k_-02-4b745e57928c4786a61b_dtMvEBr.jpg",
+            "restaurant": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "auth.permission",
+        "fields": {
+            "name": "Can add log entry",
+            "content_type": [
+                "admin",
+                "logentry"
+            ],
+            "codename": "add_logentry"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "fields": {
+            "name": "Can change log entry",
+            "content_type": [
+                "admin",
+                "logentry"
+            ],
+            "codename": "change_logentry"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "fields": {
+            "name": "Can delete log entry",
+            "content_type": [
+                "admin",
+                "logentry"
+            ],
+            "codename": "delete_logentry"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "fields": {
+            "name": "Can view log entry",
+            "content_type": [
+                "admin",
+                "logentry"
+            ],
+            "codename": "view_logentry"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "fields": {
+            "name": "Can add permission",
+            "content_type": [
+                "auth",
+                "permission"
+            ],
+            "codename": "add_permission"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "fields": {
+            "name": "Can change permission",
+            "content_type": [
+                "auth",
+                "permission"
+            ],
+            "codename": "change_permission"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "fields": {
+            "name": "Can delete permission",
+            "content_type": [
+                "auth",
+                "permission"
+            ],
+            "codename": "delete_permission"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "fields": {
+            "name": "Can view permission",
+            "content_type": [
+                "auth",
+                "permission"
+            ],
+            "codename": "view_permission"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "fields": {
+            "name": "Can add group",
+            "content_type": [
+                "auth",
+                "group"
+            ],
+            "codename": "add_gr"auth.permission", "fields": {"name": "Can add profile", "content_type": ["accounts", "profile"], "codename": "add_profile"}}, {"model": "auth.permission", "fields": {"name": "Can change profile", "content_type": ["accounts", "profile"], "codename": "change_profile"}}, {"model": "auth.permission", "fields": {"name": "Can delete profile", "content_type": ["accounts", "profile"], "codename": "delete_profile"}}, {"model": "auth.permission", "fields": {"name": "Can view profile", "content_type": ["accounts", "profile"], "codename": "view_profile"}}, {"model": "auth.permission", "fields": {"name": "Can add category", "content_type": ["products", "category"], "codename": "add_category"}}, {"model": "auth.permission", "fields": {"name": "Can change category", "content_type": ["products", "category"], "codename": "change_category"}}, {"model": "auth.permission", "fields": {"name": "Can delete category", "content_type": ["products", "category"], "codename": "delete_category"}}, {"model": "auth.permission", "fields": {"name": "Can view category", "content_type": ["products", "category"], "codename": "view_category"}}, {"model": "auth.permission", "fields": {"name": "Can add discount", "content_type": ["products", "discount"], "codename": "add_discount"}}, {"model": "auth.permission", "fields": {"name": "Can change discount", "content_type": ["products", "discount"], "codename": "change_discount"}}, {"model": "auth.permission", "fields": {"name": "Can delete discount", "content_type": ["products", "discount"], "codename": "delete_discount"}}, {"model": "auth.permission", "fields": {"name": "Can view discount", "content_type": ["products", "discount"], "codename": "view_discount"}}, {"model": "auth.permission", "fields": {"name": "Can add product", "content_type": ["products", "product"], "codename": "add_product"}}, {"model": "auth.permission", "fields": {"name": "Can change product", "content_type": ["products", "product"], "codename": "change_product"}}, {"model": "auth.permission", "fields": {"name": "Can delete product", "content_type": ["products", "product"], "codename": "delete_product"}}, {"model": "auth.permission", "fields": {"name": "Can view product", "content_type": ["products", "product"], "codename": "view_product"}}, {"model": "auth.permission", "fields": {"name": "Can add product image", "content_type": ["products", "productimage"], "codename": "add_productimage"}}, {"model": "auth.permission", "fields": {"name": "Can change product image", "content_type": ["products", "productimage"], "codename": "change_productimage"}}, {"model": "auth.permission", "fields": {"name": "Can delete product image", "content_type": ["products", "productimage"], "codename": "delete_productimage"}}, {"model": "auth.permission", "fields": {"name": "Can view product image", "content_type": ["products", "productimage"], "codename": "view_productimage"}}, {"model": "auth.permission", "fields": {"name": "Can add restaurant", "content_type": ["restaurants", "restaurant"], "codename": "add_restaurant"}}, {"model": "auth.permission", "fields": {"name": "Can change restaurant", "content_type": ["restaurants", "restaurant"], "codename": "change_restaurant"}}, {"model": "auth.permission", "fields": {"name": "Can delete restaurant", "content_type": ["restaurants", "restaurant"], "codename": "delete_restaurant"}}, {"model": "auth.permission", "fields": {"name": "Can view restaurant", "content_type": ["restaurants", "restaurant"], "codename": "view_restaurant"}}, {"model": "auth.permission", "fields": {"name": "Can add campaign", "content_type": ["restaurants", "campaign"], "codename": "add_campaign"}}, {"model": "auth.permission", "fields": {"name": "Can change campaign", "content_type": ["restaurants", "campaign"], "codename": "change_campaign"}}, {"model": "auth.permission", "fields": {"name": "Can delete campaign", "content_type": ["restaurants", "campaign"], "codename": "delete_campaign"}}, {"model": "auth.permission", "fields": {"name": "Can view campaign", "content_type": ["restaurants", "campaign"], "codename": "view_campaign"}}, {"model": "auth.permission", "fields": {"name": "Can add order", "content_type": ["orders", "order"], "codename": "add_order"}}, {"model": "auth.permission", "fields": {"name": "Can change order", "content_type": ["orders", "order"], "codename": "change_order"}}, {"model": "auth.permission", "fields": {"name": "Can delete order", "content_type": ["orders", "order"], "codename": "delete_order"}}, {"model": "auth.permission", "fields": {"name": "Can view order", "content_type": ["orders", "order"], "codename": "view_order"}}, {"model": "auth.permission", "fields": {"name": "Can add order item", "content_type": ["orders", "orderitem"], "codename": "add_orderitem"}}, {"model": "auth.permission", "fields": {"name": "Can change order item", "content_type": ["orders", "orderitem"], "codename": "change_orderitem"}}, {"model": "auth.permission", "fields": {"name": "Can delete order item", "content_type": ["orders", "orderitem"], "codename": "delete_orderitem"}}, {"model": "auth.permission", "fields": {"name": "Can view order item", "content_type": ["orders", "orderitem"], "codename": "view_orderitem"}}, {"model": "auth.permission", "fields": {"name": "Can add delivery charge", "content_type": ["orders", "deliverycharge"], "codename": "add_deliverycharge"}}, {"model": "auth.permission", "fields": {"name": "Can change delivery charge", "content_type": ["orders", "deliverycharge"], "codename": "change_deliverycharge"}}, {"model": "auth.permission", "fields": {"name": "Can delete delivery charge", "content_type": ["orders", "deliverycharge"], "codename": "delete_deliverycharge"}}, {"model": "auth.permission", "fields": {"name": "Can view delivery charge", "content_type": ["orders", "deliverycharge"], "codename": "view_deliverycharge"}}, {"model": "accounts.customuser", "fields": {"password": "pbkdf2_sha256$600000$IMdOVixZHmFmxlZEF51djb$DF4qS4+TdDSezNTnvg1vKylONHpSZ1DRfodPtR/++zA=", "last_login": null, "is_superuser": false, "first_name": "", "last_name": "", "is_staff": false, "is_active": true, "date_joined": "2023-09-02T08:58:40.771Z", "email": "user@example.com", "name": "string", "email_confirmed": false, "profile_completed": false, "groups": [], "user_permissions": []}}]

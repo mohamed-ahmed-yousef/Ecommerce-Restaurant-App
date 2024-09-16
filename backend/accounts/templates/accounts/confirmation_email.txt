@@ -1,0 +1,10 @@
+<!-- confirmation_signup_message.txt -->
+
+Hello from {{ SITE_NAME }}!
+
+You're receiving this e-mail because user {{ user.username }} has given your e-mail address to register an account on {{ SITE_NAME }}.
+
+To confirm this is correct, go to {{ protocol }}://{{ domain }}{{ url }}.
+
+Thank you for using {{ SITE_NAME }}!
+{{ SITE_NAME }}

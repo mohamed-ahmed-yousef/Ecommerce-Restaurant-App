@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../host"
+		},
+		{
+			"path": "../../../allauth"
+		}
+	],
+	"settings": {}
+}
