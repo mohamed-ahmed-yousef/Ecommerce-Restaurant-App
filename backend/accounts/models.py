@@ -44,8 +44,8 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = CustomUserManager()
-    first_name = models.CharField(max_length=50,blank=False)
-    last_name = models.CharField(max_length=50,blank=False)
+    name = models.CharField(max_length=50,blank=True,default='')
+    # last_name = models.CharField(max_length=50,blank=False)
     email_confirmed = models.BooleanField(_('email confirmed'), default=False)
     profile_completed = models.BooleanField(default=False)
     
@@ -58,6 +58,11 @@ class Profile(models.Model):
         bio = models.TextField(blank=True)
         profile_image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
         date_of_birth = models.DateField(null=True, blank=True)
+
+        street=models.CharField(max_length=100, null=True, blank=True)
+        house=models.CharField(max_length=100, null=True, blank=True)
+        floor=models.CharField(max_length=100, null=True, blank=True)
+        
         phone_number = models.CharField(max_length=20, null=True, blank=True)
 
         def __str__(self):

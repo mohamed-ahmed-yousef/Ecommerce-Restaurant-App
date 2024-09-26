@@ -1,0 +1,1 @@
+[{"model": "orders.orderitem", "pk": 1, "fields": {"item": 1, "quantity": 2, "order": 1}}, {"model": "orders.order", "pk": 1, "fields": {"delivery_option": "delivery", "time_preferred": "2021-01-01T00:00:00Z", "customer": 1, "restaurant": 1, "total_price": 50.0}}]

@@ -2,22 +2,35 @@ from rest_framework.views import APIView
 
 from rest_framework import viewsets
 from rest_framework.response import Response
+from accounts.permissions import CustomStaffPermission
+from products.pagination import MyPaginationClass
 
-from .models import Campaign, Category, ProductImage, Restaurant, Discount, Product
-from .serializers import CampaignSerializer, CategorySerializer, DiscountSerializer, ProductImageSerializer, ProductSerializer, RestaurantSerializer
+from restaurants.models import Campaign,Restaurant
+from restaurants.serializers import CampaignSerializer, RestaurantSerializer
+
+from .models import  Category, ProductImage, Discount, Product
+from .serializers import CategorySerializer, DiscountSerializer, ProductImageSerializer, ProductSerializer
+from rest_framework.pagination import PageNumberPagination
+
+from rest_framework import  permissions
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [CustomStaffPermission]
+    
 
 class DiscountViewSet(viewsets.ModelViewSet):
     queryset = Discount.objects.all()
     serializer_class = DiscountSerializer
+    permission_classes = [CustomStaffPermission]
+
     
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [CustomStaffPermission]
     def perform_create(self, serializer):
         serializer.save()
     def create(self, request, *args, **kwargs):
@@ -27,27 +40,11 @@ class ProductViewSet(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=201, headers=headers)
 
-class RestaurantViewSet(viewsets.ModelViewSet):
-    queryset = Restaurant.objects.all()
-    serializer_class=RestaurantSerializer
 
-class CampaignViewSet(viewsets.ModelViewSet):
-    queryset = Campaign.objects.all()
-    serializer_class = CampaignSerializer
-
-
-from django.core.paginator import Paginator
-from django.shortcuts import render
-from .models import Restaurant
-
-from rest_framework.pagination import PageNumberPagination
-class MyPaginationClass(PageNumberPagination):
-    page_size = 2  # Number of items per page
-    page_size_query_param = 'page_size'  # Custom query parameter to override page_size
-    max_page_size = 100  
+ 
 class index(APIView):
     pagination_class = MyPaginationClass
-    
+    # permission_classes = [permissions.IsAdminUser]
     def get(self, request):
 
         paginator = self.pagination_class()

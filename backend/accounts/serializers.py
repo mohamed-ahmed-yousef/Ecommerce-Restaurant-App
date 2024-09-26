@@ -24,8 +24,8 @@ class ObtainAuthTokenSerializer(serializers.Serializer):
         user = authenticate(**data)
         if user is None:
             raise serializers.ValidationError({'error': 'Incorrect email or password'})
-        if (not user.email_confirmed and not user.is_superuser):
-            raise serializers.ValidationError({'error': 'Email is not confirmed'})
+        # if (not user.email_confirmed and not user.is_superuser):
+        #     raise serializers.ValidationError({'error': 'Email is not confirmed'})
         data['token'] =RefreshToken.for_user(user)
         return data
     
@@ -39,8 +39,15 @@ class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=68, min_length=6, write_only=True)
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name','email','password')
-
+        fields = ('name','email','password')
+        # fields = '__all__'
+    def to_representation(self, instance):
+        """
+        Exclude the password field when serializing the User object.
+        """
+        data = super().to_representation(instance)
+        data.pop('password', None)
+        return data
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile

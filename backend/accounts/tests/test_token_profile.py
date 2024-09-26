@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from accounts.views import EmailTokenObtainPairView
-from accounts.serializer import ObtainAuthTokenSerializer
+from accounts.serializers import ObtainAuthTokenSerializer
 from accounts.models import CustomUser, Profile
 
 
@@ -39,16 +39,17 @@ class ProfileViewSetTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.client = Client()
-        self.user = CustomUser.objects.create_user(email='johndoe@example.com', password='testpassword')
+        self.user = CustomUser.objects.create_user(email='johndoe@example.com', password='testpassword',email_confirmed=True)
 
     def test_create_profile(self):
-        # self.client.force_login(self.user)
+        self.client.force_login(self.user)
         url='/accounts/profile/'
         data = {
-#             # 'user': {
-                'first_name': 'John',
-                'last_name': 'Doe',
-                # 'email': 'johndoe@example.com'
+            # 'user': {
+                # 'first_name': 'John',
+                # 'last_name': 'Doe',
+                'name': 'Doe',
+                'email': 'johndoe@example.com'
 #             # },
 #             # Other profile data
         }
